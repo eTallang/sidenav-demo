@@ -1,3 +1,14 @@
-<p>
-  sidenav works!
-</p>
+<div class="sidenav-container" [ngClass]="{'expanded': isOpen}">
+  <div class="logo"><span>t</span></div>
+  <div class="menu">
+    <button class="menu-item" *ngFor="let item of menuItems">
+      <i class="material-icons menu-item-icon">{{item.iconName}}</i>
+      <span class="menu-item-text">{{item.name}}</span>
+    </button>
+  </div>
+  <div class="footer">
+    <button class="expand-button" (click)="toggleExpansion()" [ngClass]="{'flipped': isOpen}">
+      <i class="material-icons">arrow_forward</i>
+    </button>
+  </div>
+</div>
