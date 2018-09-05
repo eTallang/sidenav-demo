@@ -33,7 +33,7 @@ interface MenuItem {
         query(':enter', [
           style({ opacity: 0, transform: 'translateY(-10px)' }),
           stagger('90ms', [
-            animate('900ms 300ms cubic-bezier(0, 0, 0, 1)', style({ opacity: 1, transform: 'translateY(0)' }))
+            animate('1000ms 400ms cubic-bezier(0, 0, 0, .8)', style({ opacity: 1, transform: 'translateY(0)' }))
           ])
         ], { optional: true })
       ])
