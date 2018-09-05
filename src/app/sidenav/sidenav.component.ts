@@ -41,7 +41,7 @@ interface MenuItem {
   ]
 })
 export class SidenavComponent {
-  isOpen = true;
+  isOpen = false;
   selectedMenuItem: MenuItem;
   menuItems: MenuItem[] = [
     {
