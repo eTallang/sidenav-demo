@@ -1,0 +1,16 @@
+.selected-item-marker-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 0;
+  overflow: hidden;
+  transition: transform .3s cubic-bezier(0.6, 0, 0, 1);
+
+  .marker {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid white;
+  }
+}

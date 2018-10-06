@@ -13,11 +13,13 @@
       </button>
     </div>
   </div>
-  <div style="overflow: hidden" *ngIf="selectedMenuItem?.subItems" @animateWidth [@listAnimation]="selectedMenuItem.subItems.length">
-    <div class="sub-menu-container">
-      <button class="menu-item" *ngFor="let item of selectedMenuItem.subItems">
-        <span class="menu-item-text">{{item.name}}</span>
-      </button>
+    <div class="sub-menu-container" [ngClass]="{'active': selectedMenuItem?.subItems}" [@listAnimation]="selectedMenuItem?.subItems?.length" (@listAnimation.done)="setFirstSubItemActive($event.phaseName)">
+      <app-focus-arrow [selectedItem]="selectedSubMenu" [hoveredItem]="hoveredItem"></app-focus-arrow>
+      <ng-container *ngFor="let item of selectedMenuItem?.subItems">
+        <h3>{{item.name}}</h3>
+        <button appMenuItem class="menu-item" [selected]="selectedSubMenu === link" [value]="link" (click)="selectedSubMenu = link" (mouseleave)="setHoveredItem(null)" (mouseenter)="setHoveredItem(link)" *ngFor="let link of item.items">
+          <span class="menu-item-text">{{link}}</span>
+        </button>
+      </ng-container>
     </div>
-  </div>
 </div>

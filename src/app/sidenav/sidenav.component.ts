@@ -1,10 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ViewChildren, QueryList } from '@angular/core';
 import { trigger, style, state, transition, animate, query, stagger } from '@angular/animations';
+import { MenuItemDirective } from './menu-item.directive';
 
 interface MenuItem {
   iconName: string;
   name: string;
-  subItems?: MenuItem[];
+  subItems?: SubMenuItem[];
+}
+
+interface SubMenuItem {
+  name: string;
+  items: string[];
 }
 
 @Component({
@@ -12,28 +18,17 @@ interface MenuItem {
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   animations: [
-    trigger('animateWidth', [
-      state('void',
-        style({
-          width: 0
-      })),
-      state('*',
-        style({
-          width: '*'
-      })),
-      transition('void <=> *', animate('900ms cubic-bezier(.6, 0, 0, 1)'))
-    ]),
     trigger('listAnimation', [
       transition('* => *', [
         query(':leave', [
-          stagger('90ms', [
-            animate('900ms cubic-bezier(.6, 0, 0, 1)', style({ opacity: 0, transform: 'translateY(-10px)' }))
+          stagger('50ms', [
+            animate('400ms cubic-bezier(.6, 0, 0, 1)', style({ opacity: 0, transform: 'translateY(-16px)' }))
           ])
         ], { optional: true }),
         query(':enter', [
-          style({ opacity: 0, transform: 'translateY(-10px)' }),
-          stagger('90ms', [
-            animate('1000ms 400ms cubic-bezier(0, 0, 0, .8)', style({ opacity: 1, transform: 'translateY(0)' }))
+          style({ opacity: 0, transform: 'translateY(-16px)' }),
+          stagger('50ms', [
+            animate('500ms 200ms cubic-bezier(0, 0, 0, .8)', style({ opacity: 1, transform: 'translateY(0)' }))
           ])
         ], { optional: true })
       ])
@@ -41,8 +36,12 @@ interface MenuItem {
   ]
 })
 export class SidenavComponent {
+  @ViewChildren(MenuItemDirective) subMenuItems: QueryList<MenuItemDirective>;
+
   isOpen = false;
   selectedMenuItem: MenuItem;
+  selectedSubMenu: string;
+  hoveredItem: MenuItemDirective;
   menuItems: MenuItem[] = [
     {
       iconName: 'home',
@@ -57,16 +56,16 @@ export class SidenavComponent {
       name: 'Assignments',
       subItems: [
         {
-          iconName: 'work',
-          name: 'Work assignments'
+          name: 'Assignments',
+          items: [ 'Work assignments', 'Sent assignments', 'Add assignment' ]
         },
         {
-          iconName: 'email',
-          name: 'Sent assignments'
+          name: 'Private',
+          items: [ 'Personal stuff', 'Some other stuff'  ]
         },
         {
-          iconName: 'add_circle',
-          name: 'Add assignment'
+          name: 'Third option',
+          items: [ 'Some other menu item', 'Final item' ]
         }
       ]
     },
@@ -86,5 +85,17 @@ export class SidenavComponent {
 
   setSelectedItem(selectedItem: MenuItem): void {
     this.selectedMenuItem = selectedItem;
+  }
+
+  setHoveredItem(item: string) {
+    this.hoveredItem = this.subMenuItems.find(i => i.value === item);
+  }
+
+  setFirstSubItemActive(phaseName: string) {
+    if (phaseName === 'done') {
+      const firstItem = this.selectedMenuItem.subItems[0].items[0];
+      this.setHoveredItem(firstItem);
+      this.selectedSubMenu = firstItem;
+    }
   }
 }
