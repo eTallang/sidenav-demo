@@ -1,7 +1,7 @@
 import { Component, ViewChildren, QueryList, ChangeDetectorRef, OnInit } from '@angular/core';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
 import { MenuItemDirective } from './menu-item.directive';
 import { MenuItem, menuItems, SubMenuItem } from './menu-items';
@@ -39,7 +39,7 @@ export class SidenavComponent implements OnInit {
   constructor(private router: Router, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.router.events.pipe(filter(ev => ev instanceof NavigationEnd)).subscribe(() => {
+    this.router.events.pipe(filter(ev => ev instanceof NavigationEnd), take(1)).subscribe(() => {
       this.menuItems.forEach(menuItem => {
         if (this.isItemActive(menuItem)) {
           this.selectedMenuItem = menuItem;
