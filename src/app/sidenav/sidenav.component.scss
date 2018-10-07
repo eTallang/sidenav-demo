@@ -3,6 +3,7 @@
 $main-menu-color: #039BE5;
 $sub-menu-color: #03A9F4;
 $animation: 360ms cubic-bezier(0.6, 0, 0, 1);
+$text-size: .9375rem;
 
 .sidenav-container {
   display: flex;
@@ -57,16 +58,15 @@ $animation: 360ms cubic-bezier(0.6, 0, 0, 1);
         align-items: center;
         height: 60px;
         text-decoration: none;
-
+        
         &-icon {
           font-size: 26px;
           padding: 0 30px 0 16px;
           box-sizing: border-box;
         }
-
+        
         &-text {
-          font-size: 1rem;
-          letter-spacing: 1px;
+          font-size: $text-size;
         }
 
         &:hover,
@@ -111,7 +111,7 @@ $animation: 360ms cubic-bezier(0.6, 0, 0, 1);
     }
 
     &.expanded {
-      width: 240px;
+      width: 200px;
     }
   }
 
@@ -147,7 +147,7 @@ $animation: 360ms cubic-bezier(0.6, 0, 0, 1);
       width: 100%;
       padding: 0;
       margin-left: 20px;
-      font-size: 15px;
+      font-size: $text-size;
 
       &.active {
         font-weight: bold;
@@ -156,7 +156,7 @@ $animation: 360ms cubic-bezier(0.6, 0, 0, 1);
 
     &.active {
       padding: 0 30px;
-      width: 190px;
+      width: 180px;
     }
   }
 }

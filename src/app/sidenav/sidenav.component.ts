@@ -1,21 +1,9 @@
-import { Component, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
+import { Router } from '@angular/router';
+
 import { MenuItemDirective } from './menu-item.directive';
-
-interface MenuItem {
-  iconName: string;
-  name: string;
-  url?: string;
-  subItems?: SubMenuItem[];
-}
-
-interface SubMenuItem {
-  name: string;
-  items: {
-    name: string;
-    url: string;
-  }[];
-}
+import { MenuItem, menuItems, SubMenuItem } from './menu-items';
 
 @Component({
   selector: 'app-sidenav',
@@ -41,90 +29,29 @@ export class SidenavComponent {
   @ViewChildren(MenuItemDirective) subMenuItems: QueryList<MenuItemDirective>;
 
   isOpen = false;
-  selectedMenuItem: MenuItem;
-  selectedSubMenu: string;
-  hoveredItem: MenuItemDirective;
-  menuItems: MenuItem[] = [
-    {
-      iconName: 'home',
-      name: 'Home',
-      url: 'dashboard'
-    },
-    {
-      iconName: 'grid_on',
-      name: 'Sheets',
-      url: 'sheets'
-    },
-    {
-      iconName: 'assignment',
-      name: 'Assignments',
-      subItems: [
-        {
-          name: 'Assignments',
-          items: [
-            {
-              name: 'Work assignments',
-              url: 'work-assignments'
-            },
-            {
-              name: 'Sent assignments',
-              url: 'sent-assignments'
-            },
-            {
-              name: 'Add assignment',
-              url: 'add-assignment'
-            }
-          ]
-        },
-        {
-          name: 'Private',
-          items: [
-            {
-              name: 'Personal stuff',
-              url: 'personal-stuff'
-            },
-            {
-              name: 'Some other stuff',
-              url: 'some-other-stuff'
-            }
-          ]
-        },
-        {
-          name: 'Third option',
-          items: [
-            {
-              name: 'Some other menu item',
-              url: 'some-other-menu-item'
-            },
-            {
-              name: 'Final item',
-              url: 'final-item'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      iconName: 'favorite',
-      name: 'Favorites',
-      url: 'favorites'
-    },
-    {
-      iconName: 'account_circle',
-      name: 'Profile',
-      url: 'profile'
-    }
-  ];
 
-  toggleExpansion(): void {
-    this.isOpen = !this.isOpen;
-  }
+  menuItems: MenuItem[] = menuItems;
+  selectedMenuItem: MenuItem;
+  selectedSubMenu: MenuItemDirective;
+  hoveredSubMenu: MenuItemDirective;
+
+  constructor(private router: Router, private changeDetectorRef: ChangeDetectorRef) { }
 
   setSelectedItem(selectedItem: MenuItem): void {
     this.selectedMenuItem = selectedItem;
+    if (selectedItem.subItems && selectedItem.subItems.length) {
+      const selectedSubMenu = selectedItem.subItems[0].items[0];
+      this.router.navigate(['', selectedSubMenu.url]);
+      this.changeDetectorRef.detectChanges();
+      this.setSelectedSubMenu(selectedSubMenu);
+    }
   }
 
-  setHoveredItem(item: string) {
-    this.hoveredItem = this.subMenuItems.find(i => i.value === item);
+  setSelectedSubMenu(subMenuItem: SubMenuItem): void {
+    this.selectedSubMenu = this.subMenuItems.find(i => i.value === subMenuItem);
+  }
+
+  setHoveredSubMenu(subMenuItem: SubMenuItem) {
+    this.hoveredSubMenu = this.subMenuItems.find(i => i.value === subMenuItem);
   }
 }

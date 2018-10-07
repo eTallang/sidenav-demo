@@ -16,6 +16,9 @@ export class FocusArrowComponent implements OnChanges {
     if (this.hoveredItem) {
       this.selectedItemHeight = this.transformToPixelValue(this.hoveredItem.height);
       this.selectedItemOffset = this.transformToPixelValue(this.hoveredItem.offset);
+    } else if (this.selectedItem) {
+      this.selectedItemHeight = this.transformToPixelValue(this.selectedItem.height);
+      this.selectedItemOffset = this.transformToPixelValue(this.selectedItem.offset);
     }
   }
 

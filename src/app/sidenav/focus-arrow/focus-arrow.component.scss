@@ -1,4 +1,4 @@
-$arrow-size: 12px;
+$arrow-size: 14px;
 
 .selected-item-marker-container {
   position: absolute;
@@ -6,7 +6,7 @@ $arrow-size: 12px;
   align-items: center;
   right: 0;
   overflow: hidden;
-  transition: transform .3s cubic-bezier(0.6, 0, 0, 1);
+  transition: transform .2s cubic-bezier(0.6, 0, 0, 1);
 
   .marker {
     width: 0;
