@@ -14,12 +14,12 @@
       </button>
     </div>
   </div>
-  <div class="sub-menu-container" [ngClass]="{'active': selectedMenuItem?.subItems}" [@listAnimation]="selectedMenuItem?.subItems?.length" (mouseleave)="setHoveredSubMenu(null)">
+  <div class="sub-menu-container" [ngClass]="{'active': selectedMenuItem?.subItems}" [@listAnimation]="selectedMenuItem?.subItems?.length" (mouseleave)="hoveredSubMenu = null">
     <app-focus-arrow [selectedItem]="selectedSubMenu" [hoveredItem]="hoveredSubMenu"></app-focus-arrow>
     <ng-container *ngFor="let item of selectedMenuItem?.subItems">
       <h3>{{item.name}}</h3>
       <a [routerLink]="['', link.url]" routerLinkActive="active" appMenuItem [value]="link" class="menu-item"
-        (click)="setSelectedSubMenu(link)" (mouseenter)="setHoveredSubMenu(link)" *ngFor="let link of item.items">
+        (click)="selectedSubMenu = getMenuDirective(link)" (mouseenter)="hoveredSubMenu = getMenuDirective(link)" *ngFor="let link of item.items">
         <span class="menu-item-text">{{link.name}}</span>
       </a>
     </ng-container>

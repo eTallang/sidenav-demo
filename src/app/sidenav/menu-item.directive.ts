@@ -15,5 +15,5 @@ export class MenuItemDirective {
     return this.elementRef.nativeElement.offsetTop;
   }
 
-  constructor(private elementRef: ElementRef<HTMLElement>) { }
+  constructor(private elementRef: ElementRef<HTMLAnchorElement>) { }
 }
