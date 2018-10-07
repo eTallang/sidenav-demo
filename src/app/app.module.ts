@@ -3,13 +3,17 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { SidenavModule } from './sidenav/sidenav.module';
+import { AppRoutingModule } from './app-routing.module';
+import { StubComponent } from './stub/stub.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    StubComponent
   ],
   imports: [
     BrowserAnimationsModule,
+    AppRoutingModule,
     SidenavModule
   ],
   bootstrap: [AppComponent]

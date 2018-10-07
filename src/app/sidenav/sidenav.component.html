@@ -2,10 +2,11 @@
   <div class="main-menu-container" [ngClass]="{'expanded': isOpen}">
     <div class="logo"><span>t</span></div>
     <div class="menu">
-      <button class="menu-item" *ngFor="let item of menuItems" [ngClass]="{'selected': selectedMenuItem?.name === item.name}" (click)="setSelectedItem(item)">
+      <a [routerLink]="['', item.url]" routerLinkActive="active" [ngClass]="{'active': !item.url && item === selectedMenuItem}"
+        class="menu-item" *ngFor="let item of menuItems" (click)="setSelectedItem(item)">
         <i class="material-icons menu-item-icon">{{item.iconName}}</i>
         <span class="menu-item-text">{{item.name}}</span>
-      </button>
+      </a>
     </div>
     <div class="footer">
       <button class="expand-button" (click)="toggleExpansion()" [ngClass]="{'flipped': isOpen}">
@@ -13,13 +14,14 @@
       </button>
     </div>
   </div>
-    <div class="sub-menu-container" [ngClass]="{'active': selectedMenuItem?.subItems}" [@listAnimation]="selectedMenuItem?.subItems?.length" (@listAnimation.done)="setFirstSubItemActive($event.phaseName)">
-      <app-focus-arrow [selectedItem]="selectedSubMenu" [hoveredItem]="hoveredItem"></app-focus-arrow>
-      <ng-container *ngFor="let item of selectedMenuItem?.subItems">
-        <h3>{{item.name}}</h3>
-        <button appMenuItem class="menu-item" [selected]="selectedSubMenu === link" [value]="link" (click)="selectedSubMenu = link" (mouseleave)="setHoveredItem(null)" (mouseenter)="setHoveredItem(link)" *ngFor="let link of item.items">
-          <span class="menu-item-text">{{link}}</span>
-        </button>
-      </ng-container>
-    </div>
+  <div class="sub-menu-container" [ngClass]="{'active': selectedMenuItem?.subItems}" [@listAnimation]="selectedMenuItem?.subItems?.length">
+    <app-focus-arrow [selectedItem]="selectedSubMenu" [hoveredItem]="hoveredItem"></app-focus-arrow>
+    <ng-container *ngFor="let item of selectedMenuItem?.subItems">
+      <h3>{{item.name}}</h3>
+      <a [routerLink]="['', link.url]" appMenuItem class="menu-item" [selected]="selectedSubMenu === link" [value]="link"
+        (click)="selectedSubMenu = link" (mouseleave)="setHoveredItem(null)" (mouseenter)="setHoveredItem(link)" *ngFor="let link of item.items">
+        <span class="menu-item-text">{{link.name}}</span>
+      </a>
+    </ng-container>
+  </div>
 </div>

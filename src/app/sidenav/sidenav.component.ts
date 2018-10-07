@@ -1,16 +1,20 @@
 import { Component, ViewChildren, QueryList } from '@angular/core';
-import { trigger, style, state, transition, animate, query, stagger } from '@angular/animations';
+import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { MenuItemDirective } from './menu-item.directive';
 
 interface MenuItem {
   iconName: string;
   name: string;
+  url?: string;
   subItems?: SubMenuItem[];
 }
 
 interface SubMenuItem {
   name: string;
-  items: string[];
+  items: {
+    name: string;
+    url: string;
+  }[];
 }
 
 @Component({
@@ -21,14 +25,12 @@ interface SubMenuItem {
     trigger('listAnimation', [
       transition('* => *', [
         query(':leave', [
-          stagger('50ms', [
-            animate('400ms cubic-bezier(.6, 0, 0, 1)', style({ opacity: 0, transform: 'translateY(-16px)' }))
-          ])
+          animate('400ms', style({ opacity: 0, transform: 'translateY(0px)' }))
         ], { optional: true }),
         query(':enter', [
-          style({ opacity: 0, transform: 'translateY(-16px)' }),
-          stagger('50ms', [
-            animate('500ms 200ms cubic-bezier(0, 0, 0, .8)', style({ opacity: 1, transform: 'translateY(0)' }))
+          style({ opacity: 0, transform: 'translateY(-14px)' }),
+          stagger('40ms', [
+            animate('400ms 200ms cubic-bezier(0, 0, 0, .8)', style({ opacity: 1, transform: 'translateY(0)' }))
           ])
         ], { optional: true })
       ])
@@ -45,11 +47,13 @@ export class SidenavComponent {
   menuItems: MenuItem[] = [
     {
       iconName: 'home',
-      name: 'Home'
+      name: 'Home',
+      url: 'dashboard'
     },
     {
       iconName: 'grid_on',
-      name: 'Sheets'
+      name: 'Sheets',
+      url: 'sheets'
     },
     {
       iconName: 'assignment',
@@ -57,25 +61,58 @@ export class SidenavComponent {
       subItems: [
         {
           name: 'Assignments',
-          items: [ 'Work assignments', 'Sent assignments', 'Add assignment' ]
+          items: [
+            {
+              name: 'Work assignments',
+              url: 'work-assignments'
+            },
+            {
+              name: 'Sent assignments',
+              url: 'sent-assignments'
+            },
+            {
+              name: 'Add assignment',
+              url: 'add-assignment'
+            }
+          ]
         },
         {
           name: 'Private',
-          items: [ 'Personal stuff', 'Some other stuff'  ]
+          items: [
+            {
+              name: 'Personal stuff',
+              url: 'personal-stuff'
+            },
+            {
+              name: 'Some other stuff',
+              url: 'some-other-stuff'
+            }
+          ]
         },
         {
           name: 'Third option',
-          items: [ 'Some other menu item', 'Final item' ]
+          items: [
+            {
+              name: 'Some other menu item',
+              url: 'some-other-menu-item'
+            },
+            {
+              name: 'Final item',
+              url: 'final-item'
+            }
+          ]
         }
       ]
     },
     {
       iconName: 'favorite',
-      name: 'Favorites'
+      name: 'Favorites',
+      url: 'favorites'
     },
     {
       iconName: 'account_circle',
-      name: 'Profile'
+      name: 'Profile',
+      url: 'profile'
     }
   ];
 
@@ -89,13 +126,5 @@ export class SidenavComponent {
 
   setHoveredItem(item: string) {
     this.hoveredItem = this.subMenuItems.find(i => i.value === item);
-  }
-
-  setFirstSubItemActive(phaseName: string) {
-    if (phaseName === 'done') {
-      const firstItem = this.selectedMenuItem.subItems[0].items[0];
-      this.setHoveredItem(firstItem);
-      this.selectedSubMenu = firstItem;
-    }
   }
 }
